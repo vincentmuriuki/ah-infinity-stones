@@ -1,0 +1,88 @@
+/* override bootstrap classes and customize to AH design preferences */
+.bg-dark{
+    background-color: #222629!important
+}
+.navbar-collapse {
+    text-align: center;
+  }
+  li a, i, .fa-search {
+      color: rgb(219, 216, 216)!important;
+  }
+  li.active a{
+      color: #86C232!important;
+  }
+  a:hover, i:hover {
+    color: #86C232!important;
+  }
+ #home-search-btn{
+     border-top-left-radius: 0px;
+     border-bottom-left-radius: 0px;
+     background-color: #86C232;
+     border-color: #86C232;
+ }
+ .fa-search:hover{
+    color:#222629!important;
+ }
+ #navbarSupportedContent{
+     margin-left: 10%;
+ }
+ #nav-search-form{
+     margin-right: 12%;
+     width: 40%;
+ }
+ .navbar-brand img{
+    height: 40px;
+    width: 40px;
+ }
+ .page-header{
+     text-align: center!important;
+     margin-top: 1%;
+ }
+ #article_write{
+     background-image: url('images/article_write.jpeg');
+     background-size: 100% 100%;
+     height: 400px;
+ }
+ #write_button{
+     width: 30%;
+     margin: 0 auto;
+     padding-top: 15%;
+     text-align: center;
+ }
+ #write_button button{
+     width: 50%;
+     height: 50px;
+     background-color: #86C232!important;
+     color: #fff;
+ }
+ #write_button button:hover, #read-more:hover{
+     background-color: #222629!important;
+     opacity: 0.7;
+     color: #fff!important;
+ }
+ #read-more{
+     background-color: #86C232;
+     border-style: none;
+ }
+ footer{
+    background-color: #222629!important;
+    color: rgb(219, 216, 216);
+ }
+ footer li{
+     list-style: none;
+ }
+ footer a{
+     text-decoration: none!important;
+ }
+ #footer-row{
+     padding-top: 3%;
+ }
+ .subscribe{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    background-color: #474B4F;
+    color: rgb(219, 216, 216);
+ }
+ .subscribe:hover{
+     color: #86C232;
+ }
