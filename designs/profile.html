@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" 
+        integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" 
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" 
+        integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+        crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg sticky-top bg-dark">
+        <a class="navbar-brand" href="#"><img src="images/logo.png" alt="Logo"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Categories
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Technology</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Music</a>
+                </div>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-right" id="nav-search-form" action="">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                    <div class="input-group-btn">
+                    <button class="btn btn-success" style="height: 35px" id="home-search-btn" type="button">
+                        <i class="fas fa-search" ></i></span>
+                    </button>
+                    </div>
+                </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+            <li><a href="login.html" class="nav-link"><i class="fas fa-user-plus"></i></span>Sign Up</a></li>
+            <li><a href="register.html" class="nav-link"><i class="fas fa-sign-in-alt"></i></span>Login</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid content">
+        <div class="row">
+            <div class="side-nav col-md-2">
+                <nav id="sidebar">
+                    <div class="sidebar-header">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <h5 class="dash">Dashboard</h5>
+                    </div>
+                
+                    <ul class="menu-items">
+                        <li>
+                            <a href="edit-profile.html">Edit Profile</a>
+                        </li>
+                        <li>
+                            <a href="#">My Stories</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="content col-md-10">
+                <div class="header">
+                    <h3>Profile</h3>
+                </div>
+                <div>
+                    <div class="row profile">
+                        <div class="col-md-3">
+                            <img src="images/profile.jpeg" alt="">
+                        </div>
+                        <div class="col-md-9 profile-name">
+                            <h3>Remmy</h3>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                            <div class="icons">
+                                <i id="fb" class="fab fa-facebook-square fa-3x"></i>
+                                <i id="twttr" class="fab fa-twitter-square fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row bio" style="margin-bottom: 206px">
+                    <div class="col-md-8 about">
+                        <h4>About</h4>
+                        <hr>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                    </div>
+                    <div class="col-md-3 stats">
+                        <h4>Statistics</h4>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 following">
+                                <p>10 <br> Following</p>
+                            </div>
+                            <div class="col-md-6 followers">
+                                <p>10 <br> Followers</p>
+        
+                            </div>
+
+                        </div>
+                        
+
+                    </div>
+                </div>
+                <footer>
+                        <div class="footer col-md-12">
+                            <div class="container-fluid">
+                                <div class="row" id="footer-row">
+                                    <div class="col-md-3">
+                                        <ul>
+                                            <li><a href="#">About Us</a></li>
+                                            <li><a href="#">Contact Us</a></li>
+                                            <li><a href="#">FAQ</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <form>
+                                            <div class="input-group">
+                                                <input type="email" class="form-control" placeholder="Email Address" required>
+                                                <button type="button" class="btn btn-default input-group-btn subscribe" >Subscribe</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <ul>
+                                            <li>AH Inc. &copy; 2018</li>
+                                            <li>+254-711-111-111</li>
+                                            <li>
+                                                <i class="fab fa-facebook-square"></i>
+                                                <i class="fab fa-twitter-square"></i>
+                                                <i class="fab fa-instagram"></i>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+            </div>
+        </div>
+        
+    </div>
+    
+</body>
+</html>
