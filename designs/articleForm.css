@@ -1,0 +1,24 @@
+#articleForm {
+    width:95%;
+    border: 1px solid black;
+    align-content: center;
+    padding:5em;
+    margin:2em;
+}
+#articleDescription {
+    height: 4em;
+}
+#articleBody {
+    height:30em;
+    overflow:auto;
+}
+#publishBtn {
+    background-color: #86C232;
+    border-color: #86C232;
+}
+#publishBtn:hover {
+    color:#222629;
+}
+label {
+    font-weight: bold;
+}
