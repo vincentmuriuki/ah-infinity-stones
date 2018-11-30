@@ -49,15 +49,13 @@ img {
 }
 
 .header {
-    /* box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.25); */
     border-bottom: solid 1px rgba(104, 103, 103, 0.25);
     padding: 10px;
     background-color: #fff;
 }
 
 .side-nav {
-    background: rgb(37, 37, 37);
-    height: 116vh;
+    background: #474B4F;
     padding: 0 !important;
 }
 
@@ -76,6 +74,7 @@ img {
 
 .bio{
     margin-top: 5%;
+    
 }
 
 .edit {
@@ -140,13 +139,13 @@ h4 {
     text-decoration: none;
 }
 
-input[type=text] {
+.profile-edit{
     color: #777;
-    padding-left: 10px;
-    margin-right: 10px;
-    margin-left: 18px;
-    width: 80%;
-    height: 35px; 
+    padding-left: 10px!important;
+    margin-right: 10px!important;
+    margin-left: 18px!important;
+    width: 80%!important;
+    height: 35px!important; 
 }
 
 #container {
@@ -190,7 +189,6 @@ label {
 footer{
     background-color: #343a40!important;
     color: rgb(219, 216, 216);
-    margin: 10px -15px;
  }
  footer li{
      list-style: none;
@@ -204,7 +202,7 @@ footer{
  .subscribe{
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
-    background-color: rgb(37, 37, 37);
+    background-color: #474B4F;
     color: rgb(219, 216, 216);
  }
  .subscribe:hover{

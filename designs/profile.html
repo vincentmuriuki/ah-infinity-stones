@@ -20,7 +20,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg sticky-top bg-dark">
-        <a class="navbar-brand" href="#"><img src="images/logo.png" alt="Logo"></a>
+        <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="Logo"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -42,17 +42,25 @@
             </ul>
             <form class="navbar-form navbar-right" id="nav-search-form" action="">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                    <div class="input-group-btn">
-                    <button class="btn btn-success" style="height: 35px" id="home-search-btn" type="button">
-                        <i class="fas fa-search" ></i></span>
+                  <input type="text" class="form-control" placeholder="Search">
+                  <div class="input-group-btn">
+                    <button class="btn btn-success" id="home-search-btn" type="button">
+                        <i class="fas fa-search"></i></span>
                     </button>
-                    </div>
+                  </div>
                 </div>
             </form>
             <ul class="nav navbar-nav navbar-right">
-            <li><a href="login.html" class="nav-link"><i class="fas fa-user-plus"></i></span>Sign Up</a></li>
-            <li><a href="register.html" class="nav-link"><i class="fas fa-sign-in-alt"></i></span>Login</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Account
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="#">Notifications</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="login.html">Log Out</a>
+                    </div>
+                </li>
             </ul>
         </div>
     </nav>
@@ -70,7 +78,7 @@
                             <a href="edit-profile.html">Edit Profile</a>
                         </li>
                         <li>
-                            <a href="#">My Stories</a>
+                            <a href="article-all.html">My Stories</a>
                         </li>
                     </ul>
                 </nav>
@@ -118,44 +126,45 @@
 
                     </div>
                 </div>
-                <footer>
-                        <div class="footer col-md-12">
-                            <div class="container-fluid">
-                                <div class="row" id="footer-row">
-                                    <div class="col-md-3">
-                                        <ul>
-                                            <li><a href="#">About Us</a></li>
-                                            <li><a href="#">Contact Us</a></li>
-                                            <li><a href="#">FAQ</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <form>
-                                            <div class="input-group">
-                                                <input type="email" class="form-control" placeholder="Email Address" required>
-                                                <button type="button" class="btn btn-default input-group-btn subscribe" >Subscribe</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <ul>
-                                            <li>AH Inc. &copy; 2018</li>
-                                            <li>+254-711-111-111</li>
-                                            <li>
-                                                <i class="fab fa-facebook-square"></i>
-                                                <i class="fab fa-twitter-square"></i>
-                                                <i class="fab fa-instagram"></i>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
+                
             </div>
         </div>
         
     </div>
+    <footer>
+        <div class="footer col-md-12">
+            <div class="container-fluid">
+                <div class="row" id="footer-row">
+                    <div class="col-md-3">
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <form>
+                            <div class="input-group">
+                                <input type="email" class="form-control" placeholder="Email Address" required>
+                                <button type="button" class="btn btn-default input-group-btn subscribe" >Subscribe</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-3">
+                        <ul>
+                            <li>AH Inc. &copy; 2018</li>
+                            <li>+254-711-111-111</li>
+                            <li>
+                                <i class="fab fa-facebook-square"></i>
+                                <i class="fab fa-twitter-square"></i>
+                                <i class="fab fa-instagram"></i>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
     
 </body>
 </html>

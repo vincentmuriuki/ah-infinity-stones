@@ -20,7 +20,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg sticky-top bg-dark">
-        <a class="navbar-brand" href="#"><img src="images/logo.png" alt="Logo"></a>
+        <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="Logo"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -44,15 +44,23 @@
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search">
                     <div class="input-group-btn">
-                    <button class="btn btn-success" style="height: 35px" id="home-search-btn" type="button">
+                    <button class="btn btn-success" id="home-search-btn" type="button">
                         <i class="fas fa-search" ></i></span>
                     </button>
                     </div>
                 </div>
             </form>
             <ul class="nav navbar-nav navbar-right">
-            <li><a href="login.html" class="nav-link"><i class="fas fa-user-plus"></i></span>Sign Up</a></li>
-            <li><a href="register.html" class="nav-link"><i class="fas fa-sign-in-alt"></i></span>Login</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Account
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="#">Notifications</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="login.html">Log Out</a>
+                    </div>
+                </li>
             </ul>
         </div>
     </nav>
@@ -70,7 +78,7 @@
                             <a href="profile.html">View Profile</a>
                         </li>
                         <li>
-                            <a href="#">My Stories</a>
+                            <a href="article-all.html">My Stories</a>
                         </li>
                     </ul>
                 </nav>
@@ -85,77 +93,79 @@
                                 <h1>Edit Profile</h1>
                                 <div class="form-row">
                                   <div class="form-group col-md-6">
-                                    <input type="text" class="form-control" id="firstname" placeholder="First Name">
+                                    <input type="text" class="form-control profile-edit" id="firstname" placeholder="First Name">
                                   </div>
                                   <div class="form-group col-md-6">
-                                    <input type="text" class="form-control" id="lastname" placeholder="Last Name">
+                                    <input type="text" class="form-control profile-edit" id="lastname" placeholder="Last Name">
                                   </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="fb">Facebook</label>
-                                    <input type="text" class="form-control" id="fb" placeholder="Insert URL">
+                                    <input type="text" class="form-control profile-edit" id="fb" placeholder="Insert URL">
                                 </div>
                                 <div class="form-group">
                                     <label for="twitter">Twitter</label>
-                                    <input type="text" class="form-control" id="twitter" placeholder="Insert URL">
+                                    <input type="text" class="form-control profile-edit" id="twitter" placeholder="Insert URL">
                                 </div>
                                 <div class="form-group">
                                     <label for="linkedin">LinkedIn</label>
-                                    <input type="text" class="form-control" id="linkedin" placeholder="Insert URL">
+                                    <input type="text" class="form-control profile-edit" id="linkedin" placeholder="Insert URL">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputAddress">Bio</label>
-                                    <textarea name="" id="bio" cols="40" rows="2" placeholder="Max 250 characters"></textarea>
+                                    <textarea name="" id="bio" cols="30" rows="2" placeholder="Max 250 characters"></textarea>
 
                                 </div>
                                 <div class="form-group">
                                     <label for="inputAddress2">About</label>
-                                    <textarea name="" id="about" cols="40" rows="5" placeholder="Max 1000 characters"></textarea>
+                                    <textarea name="" id="about" cols="30" rows="5" placeholder="Max 1000 characters"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary edit">Submit</button>
                               </form>
                     </div>
+                    <hr/>
                 </div>     
-                <footer>
-                    <div class="footer col-md-12">
-                        <div class="container-fluid">
-                            <div class="row" id="footer-row">
-                                <div class="col-md-3">
-                                    <ul>
-                                        <li><a href="#">About Us</a></li>
-                                        <li><a href="#">Contact Us</a></li>
-                                        <li><a href="#">FAQ</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-6">
-                                    <form>
-                                        <div class="input-group">
-                                            <input type="email" class="form-control" placeholder="Email Address" required>
-                                            <button type="button" class="btn btn-default input-group-btn subscribe" >Subscribe</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="col-md-3">
-                                    <ul>
-                                        <li>AH Inc. &copy; 2018</li>
-                                        <li>+254-711-111-111</li>
-                                        <li>
-                                            <i class="fab fa-facebook-square"></i>
-                                            <i class="fab fa-twitter-square"></i>
-                                            <i class="fab fa-instagram"></i>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+                
             </div>
             
         </div>
         
         
     </div>
+    <footer>
+        <div class="footer col-md-12">
+            <div class="container-fluid">
+                <div class="row" id="footer-row">
+                    <div class="col-md-3">
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <form>
+                            <div class="input-group">
+                                <input type="email" class="form-control" placeholder="Email Address" required>
+                                <button type="button" class="btn btn-default input-group-btn subscribe" >Subscribe</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-3">
+                        <ul>
+                            <li>AH Inc. &copy; 2018</li>
+                            <li>+254-711-111-111</li>
+                            <li>
+                                <i class="fab fa-facebook-square"></i>
+                                <i class="fab fa-twitter-square"></i>
+                                <i class="fab fa-instagram"></i>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
     
 </body>
 </html>
