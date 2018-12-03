@@ -7,6 +7,7 @@ __pycache__/
 <<<<<<< HEAD
 <<<<<<< HEAD
 .DS_Store/
+<<<<<<< HEAD
 =======
 .DS_Store
 >>>>>>> chore(test-registration): Test user registration
@@ -14,6 +15,16 @@ __pycache__/
 .DS_Store/
 >>>>>>> chore(article): test for article
 
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> chore(article): test for article
+
+=======
+>>>>>>> 550c5e8036f4b7e55dd6c328eedab0b7317f7b11
+# C extensions
+>>>>>>> chore(article): test for article
 *.so
 
 # Distribution / packaging

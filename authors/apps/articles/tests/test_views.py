@@ -1,23 +1,15 @@
 from rest_framework import status
-<<<<<<< HEAD
-from rest_framework.test import APIClient
 from django.test import TestCase
 from django.urls import reverse
-from django.db.models import Avg
 from .test_config import MainTestConfig
 from authors.apps.authentication.tests.test_setup import BaseSetUp
-from authors.apps.articles.models import(
-    Article, Tag, ArticleRating
-)
-=======
-from django.urls import reverse
-from .test_config import MainTestConfig
-from authors.apps.articles.models import Article
->>>>>>> chore(article): test for article
+from authors.apps.articles.models import (Article)
 
 
 class CreateArticleTestCase(MainTestConfig):
     def setUp(self):
+        self.base = BaseSetUp()
+        self.client = self.base.client
         self.article_data = {
             'title': 'The war storry',
             'author': 1,
@@ -26,29 +18,19 @@ class CreateArticleTestCase(MainTestConfig):
             'body': 'I really loved war until...',
             'read_time': 3
         }
+        self.token = "eSknaojdIdlafesodoilkjIKLLKLJnjudalfdJndajfdaljfeESFdafjdalfjaofje"
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token)
 
     def test_post_article(self):
-
         response = self.client.post(
             reverse('articles'), self.article_data, format="json")
-
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-<<<<<<< HEAD
     def test_user_can_get_an_article(self):
-=======
-    def test_api_can_get_an_article(self):
->>>>>>> chore(article): test for article
         response = self.client.get(reverse('list', ))
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-<<<<<<< HEAD
     def test_user_can_update_article(self):
-=======
-    def test_api_can_update_article(self):
->>>>>>> chore(article): test for article
-
         self.client.post(reverse('articles'), self.article_data, format="json")
         article = Article.objects.get()
         self.change_article = {'title': 'The love storry'}
@@ -58,11 +40,7 @@ class CreateArticleTestCase(MainTestConfig):
             format='json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
-<<<<<<< HEAD
     def test_user_can_delete_article(self):
-=======
-    def test_api_can_delete_article(self):
->>>>>>> chore(article): test for article
         self.client.post(reverse('articles'), self.article_data, format="json")
         article = Article.objects.get()
         response = self.client.delete(
@@ -76,33 +54,14 @@ class CreateCommentTestCase(MainTestConfig):
     def setUp(self):
         self.comment_data = {'article': 1, 'user': 1, 'comment': 'Nice story '}
 
-<<<<<<< HEAD
     def test_user_can_post_a_comment(self):
-=======
-    def test_post_a_comment(self):
->>>>>>> chore(article): test for article
         response = self.client.post(
             reverse('comment'), self.comment_data, format="json")
-
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-<<<<<<< HEAD
 
     def test_user_can_get_all_comments(self):
         response = self.client.get(reverse('all_comments', ))
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    # def test_user_can_update_comments(self):
-    #     self.client.post(
-    #         reverse('update_comment'), self.comment_data, format="json")
-    #     comment = Comment.objects.get()
-    #     self.change_article = {'title': 'The love storry'}
-    #     res = self.client.put(
-    #         reverse('update_comment', kwargs={'pk': comment.id}),
-    #         self.change_article,
-    #         format='json')
-
-    #     self.assertEqual(res.status_code, status.HTTP_200_OK)
 
 
 class ArticleTagsTestCase(TestCase):
@@ -119,70 +78,45 @@ class ArticleTagsTestCase(TestCase):
         }
         # Declare login response
         self.login_response = self.client.post(
-            "api/users/login",
-            self.login_data,
-            format="json"
-        )
+            "api/users/login", self.login_data, format="json")
         # Replace the dummy token with self.login_response.data["Token"]
         self.token = "eSknaojdIdlafesodoilkjIKLLKLJnjudalfdJndajfdaljfeESFdafjdalfjaofje"
-
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token)
 
     def test_user_can_create_tag(self):
         """Test user can register new tags"""
-        self.tag_data = {
-            "tag": "Python"
-        }
+        self.tag_data = {"tag": "Python"}
         response = self.client.post(
-            "api/articles/tags",
-            self.tag_data,
-            format="json"
-        )
+            "api/articles/tags", self.tag_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_user_can_get_specific_tag(self):
         """Test api can return specific tag"""
-        response = self.client.get(
-            "api/articles/tags/1",
-            format="json"
-        )
+        response = self.client.get("api/articles/tags/1", format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_user_can_get_all_tag(self):
         """Test api can return all tags to enable easy filtering of articles"""
-        response = self.client.get(
-            "api/articles/tags",
-            format="json"
-        )
+        response = self.client.get("api/articles/tags", format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_user_can_update_specific_tag(self):
         """Test api can update a specific tag"""
         self.new_data = {"tag": "Love"}
         response = self.client.put(
-            "api/articles/tags/1",
-            self.new_data,
-            format="json"
-        )
+            "api/articles/tags/1", self.new_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_user_can_delete_specific_tag(self):
         """Test api can delete specific tag"""
-        response = self.client.get(
-            "api/articles/tags/1",
-            format="json"
-        )
+        response = self.client.get("api/articles/tags/1", format="json")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_user_can_tag_an_article(self):
         """Test api can add tag to an article"""
         # add a new tag
         self.new_data = {"tag": "Marriage"}
-        self.client.post(
-            "api/articles/tags",
-            self.new_data,
-            format="json"
-        )
+        self.client.post("api/articles/tags", self.new_data, format="json")
         # add article
         self.article = {
             'title': 'The marriage story',
@@ -192,16 +126,12 @@ class ArticleTagsTestCase(TestCase):
             'body': 'My wife was a criminal until she met this handsome guy.',
             'read_time': 5
         }
-
         # tag article
         self.article_data = {
             "tag": [2],
         }
         response = self.client.put(
-            "api/articles/1",
-            self.article_data,
-            format="json"
-        )
+            "api/articles/1", self.article_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
@@ -210,11 +140,7 @@ class ArticleRatingTestCase(ArticleTagsTestCase):
 
     def setUp(self):
         """Set or initialize the test data"""
-        self.rating = {
-            "article": 1,
-            "author": 1,
-            "rating": 5
-        }
+        self.rating = {"article": 1, "author": 1, "rating": 5}
 
     def test_user_can_rate_an_article(self):
         """Test user can rate articles"""
@@ -227,24 +153,14 @@ class ArticleRatingTestCase(ArticleTagsTestCase):
             "body": "The JUJU king has done it again...",
             "read_time": 4
         }
-        self.client.post(
-            "api/articles/",
-            self.article,
-            format="json"
-        )
+        self.client.post("api/articles/", self.article, format="json")
         # Rate article
         response = self.client.post(
-            "api/articles/ratings",
-            self.rating,
-            format="json"
-        )
+            "api/articles/ratings", self.rating, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
         # Get average ratings average rating for their articles
         response = self.client.post(
-            "api/articles/user_ratings/1",
-            format="json"
-        )
+            "api/articles/user_ratings/1", format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         """ Add the following code when ratings feature is implemented
             self.assertEqual(response.data['ratings'], 5)
@@ -265,21 +181,10 @@ class ArticleLikeDisklikeTestCase(ArticleTagsTestCase):
             "body": "Handily did they love him until he was no more...",
             "read_time": 2
         }
-        self.like = {
-            "article": 1,
-            "user": 1,
-            "like": True
-        }
-        self.client.post(
-            "api/articles",
-            self.article,
-            format="json"
-        )
+        self.like = {"article": 1, "user": 1, "like": True}
+        self.client.post("api/articles", self.article, format="json")
         response = self.client.post(
-            "api/articles/likes",
-            self.like,
-            format="json"
-        )
+            "api/articles/likes", self.like, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
@@ -297,21 +202,8 @@ class ArticleFavoriteTestCase(ArticleTagsTestCase):
             "body": "Many people still do not to know what they value in life",
             "read_time": 3
         }
-        self.favorite = {
-            "article": 1,
-            "user": 1,
-            "favorite": True
-        }
-        self.client.post(
-            "api/articles",
-            self.article,
-            format="json"
-        )
+        self.favorite = {"article": 1, "user": 1, "favorite": True}
+        self.client.post("api/articles", self.article, format="json")
         response = self.client.post(
-            "api/articles/favorites",
-            self.favorite,
-            format="json"
-        )
+            "api/articles/favorites", self.favorite, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-=======
->>>>>>> chore(article): test for article

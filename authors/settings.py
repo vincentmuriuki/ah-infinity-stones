@@ -38,10 +38,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_extensions',
     'rest_framework',
-<<<<<<< HEAD
     'rest_framework.authtoken',
-=======
->>>>>>> chore(article): test for article
     'authors.apps.authentication',
     'authors.apps.core',
     'authors.apps.profiles',
