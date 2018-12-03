@@ -4,7 +4,11 @@ __pycache__/
 *$py.class
 .vscode/
 .env
+.DS_Store/
+<<<<<<< HEAD
 
+=======
+>>>>>>> 550c5e8036f4b7e55dd6c328eedab0b7317f7b11
 # C extensions
 *.so
 
