@@ -17,6 +17,7 @@ from django.urls import include, path
 
 urlpatterns = [
 <<<<<<< HEAD
+<<<<<<< HEAD
     path('api-auth/', include(
         'rest_framework.urls', namespace='rest_framework')),
     path('', include('authors.apps.articles.url')),
@@ -25,4 +26,14 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_\
     framework')),
 >>>>>>> chore(test-registration): Test user registration
+=======
+    path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_\
+    framework')),
+=======
+    path('api-auth/', include(
+        'rest_framework.urls', namespace='rest_framework')),
+    path('', include('authors.apps.articles.url'))
+>>>>>>> chore(article): test for article
+>>>>>>> chore(article): test for article
 ]

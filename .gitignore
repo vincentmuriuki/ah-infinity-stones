@@ -5,10 +5,14 @@ __pycache__/
 .vscode/
 .env
 <<<<<<< HEAD
+<<<<<<< HEAD
 .DS_Store/
 =======
 .DS_Store
 >>>>>>> chore(test-registration): Test user registration
+=======
+.DS_Store/
+>>>>>>> chore(article): test for article
 
 *.so
 

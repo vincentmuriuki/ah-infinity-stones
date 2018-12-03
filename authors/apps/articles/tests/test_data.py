@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from ..models import User, Tag, Comment
+=======
+from ..models import User, Tag, Article
+>>>>>>> chore(article): test for article
 
 
 def generate_test_data():

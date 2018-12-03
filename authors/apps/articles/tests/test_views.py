@@ -1,4 +1,5 @@
 from rest_framework import status
+<<<<<<< HEAD
 from rest_framework.test import APIClient
 from django.test import TestCase
 from django.urls import reverse
@@ -8,6 +9,11 @@ from authors.apps.authentication.tests.test_setup import BaseSetUp
 from authors.apps.articles.models import(
     Article, Tag, ArticleRating
 )
+=======
+from django.urls import reverse
+from .test_config import MainTestConfig
+from authors.apps.articles.models import Article
+>>>>>>> chore(article): test for article
 
 
 class CreateArticleTestCase(MainTestConfig):
@@ -28,12 +34,20 @@ class CreateArticleTestCase(MainTestConfig):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+<<<<<<< HEAD
     def test_user_can_get_an_article(self):
+=======
+    def test_api_can_get_an_article(self):
+>>>>>>> chore(article): test for article
         response = self.client.get(reverse('list', ))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+<<<<<<< HEAD
     def test_user_can_update_article(self):
+=======
+    def test_api_can_update_article(self):
+>>>>>>> chore(article): test for article
 
         self.client.post(reverse('articles'), self.article_data, format="json")
         article = Article.objects.get()
@@ -44,7 +58,11 @@ class CreateArticleTestCase(MainTestConfig):
             format='json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
+<<<<<<< HEAD
     def test_user_can_delete_article(self):
+=======
+    def test_api_can_delete_article(self):
+>>>>>>> chore(article): test for article
         self.client.post(reverse('articles'), self.article_data, format="json")
         article = Article.objects.get()
         response = self.client.delete(
@@ -58,11 +76,16 @@ class CreateCommentTestCase(MainTestConfig):
     def setUp(self):
         self.comment_data = {'article': 1, 'user': 1, 'comment': 'Nice story '}
 
+<<<<<<< HEAD
     def test_user_can_post_a_comment(self):
+=======
+    def test_post_a_comment(self):
+>>>>>>> chore(article): test for article
         response = self.client.post(
             reverse('comment'), self.comment_data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+<<<<<<< HEAD
 
     def test_user_can_get_all_comments(self):
         response = self.client.get(reverse('all_comments', ))
@@ -290,3 +313,5 @@ class ArticleFavoriteTestCase(ArticleTagsTestCase):
             format="json"
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+=======
+>>>>>>> chore(article): test for article
