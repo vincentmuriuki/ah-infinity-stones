@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 .vscode/
 .env
-
+.DS_Store
 # C extensions
 *.so
 
@@ -84,6 +84,7 @@ celerybeat-schedule
 # virtualenv
 venv/
 ENV/
+virtual/
 
 # Spyder project settings
 .spyderproject
