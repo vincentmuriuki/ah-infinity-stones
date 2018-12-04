@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/andela/ah-infinity-stones.svg?branch=develop)](https://travis-ci.org/andela/ah-infinity-stones)
-[![Coverage Status](https://coveralls.io/repos/github/andela/ah-infinity-stones/badge.svg)](https://coveralls.io/github/andela/ah-infinity-stones)
+[![Build Status](https://travis-ci.org/andela/ah-infinity-stones.svg?branch=develop)](https://travis-ci.org/andela/ah-infinity-stones) [![Coverage Status](https://coveralls.io/repos/github/andela/ah-infinity-stones/badge.svg)](https://coveralls.io/github/andela/ah-infinity-stones)
 
 Authors Haven - A Social platform for the creative at heart.
 =======
@@ -9,6 +8,28 @@ Create a community of like minded authors to foster inspiration and innovation
 by leveraging the modern web.
 
 ---
+## Database configuration
+Follow the following steps to configure PostgreSQL database engine in your local machine.
+1. Install PostgreSQL: `brew install postgresql`
+2. Create a new postgres user: `CREATE USER sample_user WITH PASSWORD 'sample_password';`
+3. Grant privileges to the new user: `GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO sample_user;`
+4. Install dependencies: `pip3 install -r requirements.txt`
+5. Create database: `CREATE DATABASE sample_database WITH OWNER sample_user;`
+6. Create test database: `CREATE DATABASE sample_database WITH OWNER sample_user;`
+7. Create a .env file and set configuration variables as shown below. Replace the values with your own:
+```
+export DATABASE_NAME='your_database_name'
+export DATABASE_TEST='your_test_database_name'
+export DATABASE_USER='sample_user_you_created_above'
+export DATABASE_PASSWORD='password_for_the_sample_user'
+export DATABASE_HOST='your_host'
+export DATABASE_PORT='your_port_number e.g 5432'
+export DB_SECRET='your_scret_key'
+```
+8. Export .env values: `source .env`
+9. Run migrations:
+`python3 manage.py makemigrations`
+`python3 manage.py migrate`
 
 ## API Spec
 The preferred JSON object to be returned by the API should be structured as follows:
