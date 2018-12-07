@@ -143,3 +143,10 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class SocialAuthSerializer(serializers.Serializer):
+    """ This class serializes keys and key_secrets google, twitter and facebook. """
+    provider = serializers.CharField(max_length=255, required=True)
+    key = serializers.CharField(max_length=1024, required=True, trim_whitespace=True)
+    key_secret = serializers.CharField(max_length=300, allow_null=True, default=None, trim_whitespace=True)
