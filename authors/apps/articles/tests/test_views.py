@@ -1,7 +1,12 @@
 from rest_framework import status
+from rest_framework.test import APIClient
+from django.test import TestCase
 from django.urls import reverse
 from .test_config import MainTestConfig
-from authors.apps.articles.models import Article
+from authors.apps.authentication.tests.test_setup import BaseSetUp
+from authors.apps.articles.models import(
+    Article, Tag
+)
 
 
 class CreateArticleTestCase(MainTestConfig):
@@ -74,3 +79,105 @@ class CreateCommentTestCase(MainTestConfig):
     #         format='json')
 
     #     self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+
+class ArticleTagsTestCase(TestCase):
+    """This class defines the api for Tag CRUD methods"""
+
+    def setUp(self):
+        """"This method sets the test variables and test client"""
+        self.base = BaseSetUp()
+        self.client = self.base.client
+        # Initialize login credentials
+        self.login_data = {
+            "username": "remmy@test.com",
+            "password": "Password123"
+        }
+        # Declare login response
+        self.login_response = self.client.post(
+            "api/users/login",
+            self.login_data,
+            format="json"
+        )
+        # Replace the dummy token with self.login_response.data["Token"]
+        self.token = "eSknaojdIdlafesodoilkjIKLLKLJnjudalfdJndajfdaljfeESFdafjdalfjaofje"
+
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token)
+
+        # Initialize tag data
+        self.tag_data = {
+            "tag": "Python"
+        }
+
+    def test_user_can_create_tag(self):
+        """Test user can register new tags"""
+        response = self.client.post(
+            "api/articles/tags",
+            self.tag_data,
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_user_can_get_specific_tag(self):
+        """Test api can return specific tag"""
+        response = self.client.get(
+            "api/articles/tags/1",
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_user_can_get_all_tag(self):
+        """Test api can return all tags to enable easy filtering of articles"""
+        response = self.client.get(
+            "api/articles/tags",
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_user_can_update_specific_tag(self):
+        """Test api can update a specific tag"""
+        self.new_data = {"tag": "Love"}
+        response = self.client.put(
+            "api/articles/tags/1",
+            self.new_data,
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_user_can_delete_specific_tag(self):
+        """Test api can delete specific tag"""
+        response = self.client.get(
+            "api/articles/tags/1",
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_user_can_tag_an_article(self):
+        """Test api can add tag to an article"""
+        # add a new tag
+        self.new_data = {"tag": "Marriage"}
+        self.client.post(
+            "api/articles/tags",
+            self.new_data,
+            format="json"
+        )
+        # add article
+        self.article = {
+            'title': 'The marriage story',
+            'author': 1,
+            'tag': [1],
+            'description': 'Love is blind',
+            'body': 'My wife was a criminal until she met this handsome guy.',
+            'read_time': 5
+        }
+
+        # tag article
+        self.article_data = {
+            "tag": [2],
+        }
+        response = self.client.put(
+            "api/articles/1",
+            self.article_data,
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
