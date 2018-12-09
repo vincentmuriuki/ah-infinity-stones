@@ -258,3 +258,35 @@ class ArticleLikeDisklikeTestCase(ArticleTagsTestCase):
             format="json"
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+
+class ArticleFavoriteTestCase(ArticleTagsTestCase):
+    """This class defines the api test case to favorite articles"""
+
+    def setUp(self):
+        """Set or initialize the test data"""
+        # add article
+        self.article = {
+            "title": "Life Hack Guide",
+            "author": 1,
+            "tag": [1],
+            "description": "Discorer you life in 3 minutes.",
+            "body": "Many people still do not to know what they value in life",
+            "read_time": 3
+        }
+        self.favorite = {
+            "article": 1,
+            "user": 1,
+            "favorite": True
+        }
+        self.client.post(
+            "api/articles",
+            self.article,
+            format="json"
+        )
+        response = self.client.post(
+            "api/articles/favorites",
+            self.favorite,
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
