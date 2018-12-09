@@ -226,3 +226,35 @@ class ArticleRatingTestCase(ArticleTagsTestCase):
         """ Add the following code when ratings feature is implemented
             self.assertEqual(response.data['ratings'], 5)
         """
+
+
+class ArticleLikeDisklikeTestCase(ArticleTagsTestCase):
+    """This class defines the api test case to like or dislike articles"""
+
+    def setUp(self):
+        """Set or initialize the test data"""
+        # add article
+        self.article = {
+            "title": "The killer disease",
+            "author": 1,
+            "tag": [1],
+            "description": "HIV revisited",
+            "body": "Handily did they love him until he was no more...",
+            "read_time": 2
+        }
+        self.like = {
+            "article": 1,
+            "user": 1,
+            "like": True
+        }
+        self.client.post(
+            "api/articles",
+            self.article,
+            format="json"
+        )
+        response = self.client.post(
+            "api/articles/likes",
+            self.like,
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
