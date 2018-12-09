@@ -2,10 +2,11 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from django.test import TestCase
 from django.urls import reverse
+from django.db.models import Avg
 from .test_config import MainTestConfig
 from authors.apps.authentication.tests.test_setup import BaseSetUp
 from authors.apps.articles.models import(
-    Article, Tag
+    Article, Tag, ArticleRating
 )
 
 
@@ -104,13 +105,11 @@ class ArticleTagsTestCase(TestCase):
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token)
 
-        # Initialize tag data
+    def test_user_can_create_tag(self):
+        """Test user can register new tags"""
         self.tag_data = {
             "tag": "Python"
         }
-
-    def test_user_can_create_tag(self):
-        """Test user can register new tags"""
         response = self.client.post(
             "api/articles/tags",
             self.tag_data,
@@ -181,3 +180,49 @@ class ArticleTagsTestCase(TestCase):
             format="json"
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class ArticleRatingTestCase(ArticleTagsTestCase):
+    """This class defines the api to article rating test case"""
+
+    def setUp(self):
+        """Set or initialize the test data"""
+        self.rating = {
+            "article": 1,
+            "author": 1,
+            "rating": 5
+        }
+
+    def test_user_can_rate_an_article(self):
+        """Test user can rate articles"""
+        # add article
+        self.article = {
+            "title": "The mighty king",
+            "author": 1,
+            "tag": [1],
+            "description": "Killed a lion with a sword",
+            "body": "The JUJU king has done it again...",
+            "read_time": 4
+        }
+        self.client.post(
+            "api/articles/",
+            self.article,
+            format="json"
+        )
+        # Rate article
+        response = self.client.post(
+            "api/articles/ratings",
+            self.rating,
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Get average ratings average rating for their articles
+        response = self.client.post(
+            "api/articles/user_ratings/1",
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        """ Add the following code when ratings feature is implemented
+            self.assertEqual(response.data['ratings'], 5)
+        """

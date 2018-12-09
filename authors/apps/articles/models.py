@@ -80,15 +80,6 @@ class LikesDislike(models.Model):
         return "{}".format(self.like)
 
 
-class Rating(models.Model):
-    """This class represents the Rating model"""
-    rating = models.IntegerField(default=0)
-
-    def __str__(self):
-        """Returns a human readable representation of the model instance"""
-        return "{}".format(self.rating)
-
-
 class ArticleRating(models.Model):
     """This class represents the Favorite Article Rating model"""
     article = models.ManyToManyField(Article)
