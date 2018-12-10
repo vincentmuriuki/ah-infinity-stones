@@ -13,13 +13,22 @@ addons:
 
 # install dependencies
 install:
-- pip3 install -r requirements.txt
+  - pip install -r requirements.txt
+  - pip install coveralls
+  - pip install coverage
 
+before_script:
+  - psql -c "CREATE DATABASE ahinfinitystonesdb;" -U postgres
+  - python manage.py makemigrations
+  - python manage.py migrate
 
-# run test scripts
 script:
-- echo 'travis up and running'
+  - coverage run --source='.' ./manage.py test
+  - coverage report
 
-# run coveralls after successful tests
 after_success:
-- coveralls
+  - coveralls
+
+notifications:
+  email: false
+

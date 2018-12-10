@@ -1,7 +1,5 @@
 from django.db import models
-from authors.apps.authentication.models import (
-    User
-)
+from authors.apps.authentication.models import (User)
 
 
 class Tag(models.Model):
