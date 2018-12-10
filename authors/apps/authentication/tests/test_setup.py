@@ -14,5 +14,7 @@ class BaseSetUp(TestCase):
             'password': 'Password123'
         }
         # register a user
-        self.register_res = self.client.post(
-            'api/users', self.reg_data, format="json")
+        self.client.post(
+            'api/users',
+            self.reg_data,
+            format="json")

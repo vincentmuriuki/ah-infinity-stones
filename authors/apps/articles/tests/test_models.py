@@ -1,8 +1,9 @@
 from django.test import TestCase
 from authors.apps.articles.models import (
-    Article, FavoriteArticle, Comment, LikesDislike, ArticleRating,
-    Tag, BookmarkedArticle, Report, Highlight, CommentHistory)
-
+    Article, FavoriteArticle, Comment, LikesDislike,
+    ArticleRating, Tag, BookmarkedArticle, Report,
+    Highlight, CommentHistory
+)
 
 class ModelTestCase(TestCase):
     """This class defines the test suit for the artile models"""
