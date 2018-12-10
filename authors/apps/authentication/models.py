@@ -117,4 +117,17 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return self.username
 
+    def token(self):
+        """
+        This method creates a token for a user who registers or logins successfully, and
+        has an expiry date set to 24hrs from creation.
+        """
 
+        dt = datetime.now() + timedelta(days=1)
+
+        login_data = {
+            "id": self.id,
+            "username": self.username,
+            "exp": dt
+        }
+        return jwt.encode(data, settings.SECRET_KEY, algorithm='HS256').decode('utf-8')
