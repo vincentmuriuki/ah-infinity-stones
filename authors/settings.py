@@ -41,8 +41,9 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'authors.apps.authentication',
-    'authors.apps.core',
-    'authors.apps.profiles',
+    'authors.apps.core',	    
+    'authors.apps.profiles',	    
+    'authors.apps.notifications',
     'authors.apps.articles',
 ]
 
