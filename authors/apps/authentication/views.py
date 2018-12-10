@@ -46,6 +46,11 @@ class LoginAPIView(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class SocialAuthAPIView(APIView):
+    """Allow user to login via Google, Twitter and Facebook"""
+    pass
+
+
 
 class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated,)
