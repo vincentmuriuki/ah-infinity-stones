@@ -70,3 +70,7 @@ class UserTestCase(TestCase):
                 "access_token_secret": self.oauth1_access_token_secret}
         response = self.client.post(self.social_oauth_url, data=data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(json.loads(response.data)["message"],
+                         "User logged in successfully.")
+        self.assertNotEqual(json.loads(response.data)["token"], None)
+

@@ -17,3 +17,4 @@ urlpatterns = [
         name='update_comment'),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)
+

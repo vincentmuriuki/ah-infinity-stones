@@ -18,3 +18,4 @@ class Notification(models.Model):
     def __str__(self):
         "Returns a string representation of notification model."
         return "{}".format(self.title)
+        

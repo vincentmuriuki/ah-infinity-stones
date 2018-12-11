@@ -1,9 +1,8 @@
+import json
 from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
-from django.urls import reverse
 from .test_setup import BaseSetUp
-from django.core import mail
 
 
 class UserTestCase(TestCase):
@@ -15,222 +14,223 @@ class UserTestCase(TestCase):
             "username": "remmy",
             "password": "hgfhdbfsjhb"
         }
-        self.reg_url = reverse('authentication:register')
 
     def test_register_user_successfully(self):
         """Test that checks if a user instance is created."""
 
         response = self.client.post(
-            self.reg_url,
-            self.base.reg_data,
+            "api/users",
+            data=json.dumps(self.base.reg_data),
             format="json")
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertIn(b"successfully", response.content)
 
-    def test_send_verification_mail(self):
-        """Test that checks if a verification mail is sent"""
-        self.email_verification = {"user": {
-            "username": "Ronny",
-            "email": "ronnymageh@gmail.com",
-            "password": "myPass123!"
-        }
-        }
-        response = self.client.post(
-            self.reg_url,
-            self.email_verification,
-            format="json")
-        self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject, "Activate your account.")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response[
+                         "message"], "User created successfully")
 
     def test_empty_username_field(self):
         """Test that checks if the username input is empty."""
-        self.empty_username = {'user': {
+        self.empty_username = {
             "username": "",
             "email": "remmy@test.com",
             "password": "Password123"
-        }}
+        }
+
         response = self.client.post(
-            self.reg_url,
-            self.empty_username,
+            "api/users",
+            data=json.dumps(self.empty_username),
             format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn(b"may not be blank", response.content)
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "Username field cannot be left empty")
 
     def test_empty_email_field(self):
         """Test that checks if the email input is empty."""
-        self.empty_email = {'user': {
+        self.empty_email = {
             "username": "remmy",
             "email": "",
             "password": "Password123"
-        }}
+        }
 
         response = self.client.post(
-            self.reg_url,
-            self.empty_email,
+            "api/users",
+            data=json.dumps(self.empty_email),
             format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn(b"may not be blank", response.content)
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "Email field cannot be left empty")
 
     def test_empty_password_field(self):
         """Test that checks if the password input is empty."""
-        self.empty_password = {'user': {
+        self.empty_password = {
             "username": "remmy",
             "email": "remmy@test.com",
             "password": ""
         }
-        }
 
         response = self.client.post(
-            self.reg_url,
-            self.empty_password,
+            "api/users",
+            data=json.dumps(self.empty_password),
             format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn(b"may not be blank", response.content)
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "Password field cannot be left empty")
 
     def test_valid_username(self):
         """Test that checks if the username has valid input."""
-        self.valid_username = {'user': {
+        self.valid_username = {
             "username": "1@1#%^()+",
-            "email": "remmytest.com",
+            "email": "remmytestcom",
             "password": "Password123"
-        }}
+        }
 
         response = self.client.post(
-            self.reg_url,
-            self.valid_username,
+            "api/users",
+            data=json.dumps(self.valid_username),
             format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn(b"can only contain letters, numbers, -, _",
-                      response.content)
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "Valid username should be greater than 4 \
+                            characters, may contain alphanumeric, '_', '@',\
+                            '+', '.' and '-' characters")
 
     def test_valid_email(self):
         """Test that checks if the email has valid input."""
-        self.valid_email = {'user': {
+        self.valid_email = {
             "username": "remmy",
-            "email": "remmytest.com",
+            "email": "remmytestcom",
             "password": "Password123"
         }
-        }
+
         response = self.client.post(
-            self.reg_url,
-            self.valid_email,
+            "api/users",
+            data=json.dumps(self.valid_email),
             format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn(b"must be in the format xxxx@xxxx.xx", response.content)
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "Valid email should be alphanumeric with \
+                         the @ and . symbol")
 
     def test_invalid_password(self):
         """Test that checks if the password has valid input."""
-        self.valid_password = {'user': {
+        self.valid_password = {
             "username": "remmyk",
-            "email": "remmyk@test.com",
+            "email": "remmyk@testcom",
             "password": "1234567890"
         }
-        }
+
         response = self.client.post(
-            self.reg_url,
-            self.valid_password,
+            "api/users",
+            data=json.dumps(self.valid_password),
             format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn(b"between 8-128 chars long and must", response.content)
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "Valid password should be more than 8 \
+                         characters, alphanumeric, have at least one capital \
+                         letter and a symbol")
 
     def test_duplicate_username(self):
         """Test that checks if the username already exists."""
-        self.duplicate_username = {'user': {
+        self.duplicate_username = {
             "username": "remmy",
-            "email": "remmy@test.com",
-            "password": "@Password123"
-        }}
+            "email": "remmy@testcom",
+            "password": "Password123"
+        }
 
-        self.duplicate_username2 = {'user': {
+        self.duplicate_username2 = {
             "username": "remmy",
-            "email": "remmyk@test.com",
-            "password": "@Password123"
-        }}
+            "email": "remmyk@testcom",
+            "password": "Password123"
+        }
 
         self.client.post(
-            self.reg_url,
-            self.duplicate_username,
+            "api/users",
+            data=json.dumps(self.duplicate_username),
             format="json")
 
         response = self.client.post(
-            self.reg_url,
-            self.duplicate_username2,
+            "api/users",
+            data=json.dumps(self.duplicate_username2),
             format="json")
 
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn(b"Username provided already in use", response.content)
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "Username already exists")
 
     def test_duplicate_email(self):
         """Test that checks if the email already exists."""
-        self.duplicate_email = {'user': {
+        self.duplicate_email = {
             "username": "remmy",
-            "email": "remmyk@test.com",
-            "password": "@Password123"
-        }}
+            "email": "remmyk@testcom",
+            "password": "Password123"
+        }
 
-        self.duplicate_email2 = {'user': {
+        self.duplicate_email2 = {
             "username": "remmyk",
-            "email": "remmyk@test.com",
-            "password": "@Password123"
+            "email": "remmyk@testcom",
+            "password": "Password123"
         }
-        }
+
         self.client.post(
-            self.reg_url,
-            self.duplicate_email,
+            "api/users",
+            data=json.dumps(self.duplicate_email),
             format="json")
         response = self.client.post(
-            self.reg_url,
-            self.duplicate_email2,
+            "api/users/register",
+            data=json.dumps(self.duplicate_email2),
             format="json")
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn(b"email provided is already in use", response.content)
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "Email already exists")
 
     def test_missing_data(self):
         """Test that checks if the required fields exists."""
 
         response = self.client.post(
-            self.reg_url,
-            {},
+            "api/users",
+            data=json.dumps({}),
             format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn(b"required", response.content)
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "Username, email and password are \
+                         required fields")
 
     def test_missing_username(self):
         """Test that checks if the required username field exists."""
         self.missing_username = {
             "email": "remmyk@testcom",
-            "password": "@Password123"
+            "password": "Password123"
         }
 
         response = self.client.post(
-            self.reg_url,
-            self.missing_username,
+            "api/users",
+            data=json.dumps(self.missing_username),
             format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn(b"required", response.content)
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "Username is a required field")
 
     def test_missing_email(self):
         """Test that checks if the required email field exists."""
         self.missing_email = {
             "username": "remmy",
-            "password": "@Password123"
+            "password": "Password123"
         }
 
         response = self.client.post(
-            self.reg_url,
-            self.missing_email,
+            "api/users",
+            data=json.dumps(self.missing_email),
             format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn(b"required", response.content)
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "Email is a required field")
 
     def test_missing_password(self):
         """ Test that checks if the required password field exists."""
@@ -240,9 +240,10 @@ class UserTestCase(TestCase):
         }
 
         response = self.client.post(
-            self.reg_url,
-            self.missing_password,
+            "api/users",
+            data=json.dumps(self.missing_password),
             format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn(b"required", response.content)
+        self.assertEqual(json.loads(response.data)[
+                         "message"], "Password is a required field")

@@ -133,3 +133,5 @@ class Highlight(models.Model):
     def __str__(self):
         """Returns a human readable representation of the model instance"""
         return "{}".format(self.section)
+        
+

@@ -52,3 +52,4 @@ class CommentListAPIView(ListAPIView):
 
     def get(self, request, pk):
         return Response(status=status.HTTP_200_OK)
+        

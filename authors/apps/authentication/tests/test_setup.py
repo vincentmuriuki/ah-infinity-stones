@@ -18,3 +18,4 @@ class BaseSetUp(TestCase):
             'api/users',
             self.reg_data,
             format="json")
+

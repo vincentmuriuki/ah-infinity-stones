@@ -3,6 +3,7 @@ from django.urls import path, re_path
 from .views import LoginAPIView, RegistrationAPIView, \
     UserRetrieveUpdateAPIView, SocialAuthAPIView, ActivationView,\
     PasswordResetBymailAPIView
+from rest_framework import views
 
 urlpatterns = [
     path('users/', RegistrationAPIView.as_view(), name='register'),
@@ -14,3 +15,4 @@ urlpatterns = [
     path('socialAuth/', SocialAuthAPIView.as_view()),
     path('user/password-reset/', PasswordResetBymailAPIView.as_view()),
 ]
+
