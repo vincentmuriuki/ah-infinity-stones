@@ -1,7 +1,8 @@
 from django.urls import path, re_path
 
 from .views import LoginAPIView, RegistrationAPIView, \
-    UserRetrieveUpdateAPIView, SocialAuthAPIView, ActivationView
+    UserRetrieveUpdateAPIView, SocialAuthAPIView, ActivationView,\
+    PasswordResetBymailAPIView
 
 urlpatterns = [
     path('user/', UserRetrieveUpdateAPIView.as_view()),
@@ -17,4 +18,5 @@ urlpatterns = [
 >>>>>>> Refactor tests
             ActivationView.as_view(), name='activate'),
     path('socialAuth/', SocialAuthAPIView.as_view()),
+    path('user/password-reset/', PasswordResetBymailAPIView.as_view()),
 ]
