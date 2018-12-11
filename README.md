@@ -206,6 +206,10 @@ No authentication required, returns a User
 
 Required fields: `email`, `password`
 
+Alternatively, a user can login through their Google, Facebook or Twitter account.
+
+To the developers who want to add this functionality, they need to login in to their Google, Facebook and Twitter account. Then they need to go to developer settings and create an app and the service provider will give them access_key and access_key secret. Hence when Authors Haven users log in, they simply need to login to their preferred service provider instead of going through the tedious process of having to register within the app.
+
 ### Registration:
 
 `POST /api/users`
