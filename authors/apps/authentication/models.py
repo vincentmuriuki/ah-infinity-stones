@@ -1,4 +1,5 @@
 import jwt
+import os
 
 from datetime import datetime, timedelta
 
@@ -7,6 +8,13 @@ from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
 from django.db import models
+from django.core.mail import send_mail
+from django.db import models
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+
+
 
 class UserManager(BaseUserManager):
     """
@@ -29,6 +37,31 @@ class UserManager(BaseUserManager):
         user = self.model(username=username, email=self.normalize_email(email))
         user.set_password(password)
         user.save()
+
+        domain = '127.0.0.1:8000'
+        self.uid = urlsafe_base64_encode(force_bytes(user.username)).decode("utf-8")
+        token = user.token()
+        time = datetime.now()
+        time = datetime.strftime(time, '%d-%B-%Y %H:%M')
+        message = render_to_string('email_confirm.html', {
+            'user': user,
+            'domain': domain,
+            'uid': self.uid,
+            'token': user.token(),
+            'username': user.username,
+            'time': time,
+            'link': 'http://' + domain + \
+                '/api/activate/' + self.uid + '/' + token
+        }) 
+        mail_subject = 'Activate your account.'
+        to_email = user.email
+        from_email = 'infinitystones.team@gmail.com'
+        send_mail(
+            mail_subject,
+            'Verify your Account',
+            from_email,
+            [to_email, ],
+            html_message=message, fail_silently=False)
 
         return user
 
@@ -130,4 +163,4 @@ class User(AbstractBaseUser, PermissionsMixin):
             "username": self.username,
             "exp": dt
         }
-        return jwt.encode(data, settings.SECRET_KEY, algorithm='HS256').decode('utf-8')
+        return jwt.encode(login_data, settings.SECRET_KEY, algorithm='HS256').decode('utf-8')
