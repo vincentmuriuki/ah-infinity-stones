@@ -1,5 +1,4 @@
-from authors.apps.articles.models import Article, Comment
-from rest_framework import generics
+from authors.apps.articles.models import Article, Comment from rest_framework import generics
 from .serializers import ArticleSerializer, CommentSerializer
 from rest_framework import status
 from rest_framework.response import Response

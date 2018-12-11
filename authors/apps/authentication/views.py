@@ -17,7 +17,8 @@ from django.template.loader import render_to_string
 from datetime import datetime, timedelta
 from .renderers import UserJSONRenderer
 from .serializers import (
-    LoginSerializer, RegistrationSerializer, UserSerializer, ResetQuestSerializer
+    LoginSerializer, RegistrationSerializer, UserSerializer,
+    ResetQuestSerializer,
 )
 from .models import User
 from rest_framework.generics import (RetrieveUpdateDestroyAPIView,
@@ -25,6 +26,12 @@ from rest_framework.generics import (RetrieveUpdateDestroyAPIView,
     UpdateAPIView)
 from django.core.mail import send_mail
 from ...settings import EMAIL_HOST_USER
+from .backends import JWTAuthentication
+from .renderers import UserJSONRenderer
+from .serializers import (LoginSerializer, RegistrationSerializer,
+                          UserSerializer, ResetQuestSerializer)
+from ...settings import EMAIL_HOST_USER
+from django.shortcuts import render
 
 
 class RegistrationAPIView(APIView):
@@ -169,7 +176,9 @@ class PasswordResetBymailAPIView(CreateAPIView):
     def post(self, request):
         user_name = request.data['user']
         serializer = self.serializer_class.validate_email_data(data=user_name)
-
+        jwt_auth = JWTAuthentication()
+        token = jwt_auth.generate_toke(user['email'])
+        serializer = self.serializer_class.validate_email_data(data=user_name)
 
         # format the email
         hosting = request.get_host()
@@ -177,13 +186,15 @@ class PasswordResetBymailAPIView(CreateAPIView):
             response = "https://"
         else:
             response = "http://"
-        resetpage = response + hosting + 'api/reset_password/'
+        resetpage = response + hosting + '/reset' + token
         subject = "You requested password reset"
-        message = "Hello {user_name} you requested for a change in your \n"
-        "password.Please click on the link bellow to continue \n\n{link}\n\n."
-        "If this was not \n"
-        "you Please ignore the message. ".format(user_data=user_name['email'])
-        "you Please ignore the message. ".format(user_data=user_name['email'])
+        message = ("Hello {user_name} you requested for a change in your \n\n"
+                   "password.Please click on the link bellow to continue \n\n"
+                   "{reset_link}\n\n."
+                   "If this was not \n"
+                   "you Please ignore the message. ").format(
+                       user_name=user_name['email'], reset_link=resetpage)
+
         from_email = EMAIL_HOST_USER
         to_list = [user_name['email']]
 
@@ -197,3 +208,20 @@ class PasswordResetBymailAPIView(CreateAPIView):
                 "message": "Please check your email for password reset link"
             },
             status=status.HTTP_200_OK)
+
+
+# Templates
+def index(request):
+    return render(request, 'registration/pssword_reset_form.html')
+
+
+def done(request):
+    return render(request, 'passwordreset_done.html')
+
+
+def reset(request):
+    return render(request, 'reset.html')
+
+
+def thanks(request):
+    return render(request, 'reset_done.html')
