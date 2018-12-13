@@ -20,7 +20,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
             payload = jwt.decode(token, settings.SECRET_KEY, algorithm='HS256')
         except:
             raise AuthenticationFailed("Your token is invalid")
-        # Get user credentials for the user owing the token
+        # Get user credentials for the user owning the token
         try:
             user = User.objects.get(email=payload["email"])
         except User.DoesNotExist:
