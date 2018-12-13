@@ -1,6 +1,7 @@
 from django.db import models
 from ..authentication.models import User
-from ..articles.models import Article
+from authors.apps.articles.models import Article
+
 
 class Notification(models.Model):
     """This class creates the Notification model"""

@@ -1,9 +1,10 @@
 import jwt
 from django.conf import settings
-from rest_framework import authentication, exceptions
+from rest_framework import authentication
 from rest_framework.exceptions import AuthenticationFailed
 from datetime import datetime, timedelta
 from .models import User
+
 
 class JWTAuthentication(authentication.BaseAuthentication):
     """This class implement the JWT token"""
@@ -28,7 +29,8 @@ class JWTAuthentication(authentication.BaseAuthentication):
 
         # Check whether the user is active
         if not user.is_active:
-            raise AuthenticationFailed("Your account is disabled, please visit your account to activate")
+            raise AuthenticationFailed("Your account is inactive. Please visit your\
+             account to activate")
         return (user, token)
 
     def generate_token(self, email):
