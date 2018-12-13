@@ -1,3 +1,4 @@
+import os
 import jwt
 from rest_framework import status
 from rest_framework.generics import RetrieveUpdateAPIView
@@ -48,7 +49,7 @@ class RegistrationAPIView(APIView):
         # your own work later on. Get familiar with it.
         # email = user['email']
         # token = jwt_auth.generate_token(email)
-        domain = '127.0.0.1:8000'
+        domain = os.environ.get('DOMAIN')
         self.uid = urlsafe_base64_encode(force_bytes(user['username'])).decode("utf-8")
         # token = user.token()
         # jwt_auth = JWTAuthentication()
