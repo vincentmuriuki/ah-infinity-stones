@@ -1,13 +1,15 @@
 from rest_framework import status
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.authentication import TokenAuthentication
 
 from .renderers import UserJSONRenderer
 from .serializers import (
     LoginSerializer, RegistrationSerializer, UserSerializer
 )
+
 
 
 class RegistrationAPIView(APIView):
@@ -18,21 +20,23 @@ class RegistrationAPIView(APIView):
 
     def post(self, request):
         user = request.data.get('user', {})
-
+        jwt_auth = JWTAuthentication()
         # The create serializer, validate serializer, save serializer pattern
         # below is common and you will see it a lot throughout this course and
         # your own work later on. Get familiar with it.
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-
+        email = user['email']
+        token = jwt_auth.generate_token(email)
         message = {'Message': '{} registered successfully'.format(
-            user['username'])}
+            user['username']), "Token": token}
+        serializer.save()
         return Response(message, status=status.HTTP_201_CREATED)
 
 
 class LoginAPIView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    authentication_classes = (JWTAuthentication,)
     renderer_classes = (UserJSONRenderer,)
     serializer_class = LoginSerializer
 
