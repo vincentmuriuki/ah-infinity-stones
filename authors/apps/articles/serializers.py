@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from authors.apps.articles.models import Article, User, Tag, Comment
-from taggit_serializer.serializers import (TagListSerializerField,
-                                           TaggitSerializer)
+from taggit_serializer.serializers import (TagListSerializerField)
 
 
 class UserSerializer(serializers.ModelSerializer):

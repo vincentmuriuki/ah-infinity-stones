@@ -28,14 +28,22 @@ class DetailsView(generics.RetrieveUpdateDestroyAPIView):
             article, data=serializer_data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+<<<<<<< HEAD
         return Response({"message": "article updated successfully", "Data":
                          serializer.data}, status=status.HTTP_200_OK)
+=======
+        return Response({"message": "article updated successfully", "Data": serializer.data}, status=status.HTTP_200_OK)
+>>>>>>> Add slug functiopnality
 
     def delete(self, request, art_slug):
         queryset = Article.objects.get(art_slug=art_slug)
         queryset.delete()
+<<<<<<< HEAD
         return Response({"message": "article deleted successfully"},
                         status=status.HTTP_204_NO_CONTENT)
+=======
+        return Response({"message": "article deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+>>>>>>> Add slug functiopnality
 
 
 class ArticleListAPIView(ListAPIView):
@@ -46,6 +54,14 @@ class ArticleListAPIView(ListAPIView):
         return Response(status=status.HTTP_200_OK)
 
 
+<<<<<<< HEAD
+=======
+# class ArticleDeleteAPIView(DestroyAPIView):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+
+
+>>>>>>> Add slug functiopnality
 class CommentCreateViewAPIView(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer

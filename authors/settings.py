@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'authors.apps.notifications',
     'social_django',
     'taggit',
-    'taggit_serializer',
 ]
 
 MIDDLEWARE = [

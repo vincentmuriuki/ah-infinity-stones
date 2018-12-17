@@ -11,7 +11,6 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('taggit', '0002_auto_20150616_2121'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('taggit', '0002_auto_20150616_2121'),
     ]
@@ -22,11 +21,16 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
 <<<<<<< HEAD
+<<<<<<< HEAD
                 ('art_slug', models.SlugField(blank=True, max_length=250, unique=True)),
                 ('title', models.CharField(max_length=250)),
 =======
                 ('title', models.CharField(max_length=50)),
 >>>>>>> create an article and retrieve a specific article by id
+=======
+                ('art_slug', models.SlugField(blank=True, max_length=250, unique=True)),
+                ('title', models.CharField(max_length=250)),
+>>>>>>> Add slug functiopnality
                 ('description', models.CharField(default='', max_length=250)),
                 ('body', models.TextField(default='')),
                 ('read_time', models.PositiveIntegerField(default=1)),
