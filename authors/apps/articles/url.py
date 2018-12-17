@@ -3,7 +3,6 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from .views import (ArticleCreateView, ArticleUpdateView, ArticleListAPIView,
                     ArticleDeleteAPIView, CommentCreateViewAPIView,
                     CommentListAPIView, CommentUpdateView)
-                   
 
 urlpatterns = [
     path('articles', ArticleCreateView.as_view(), name='articles'),

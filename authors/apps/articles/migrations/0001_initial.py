@@ -2,6 +2,8 @@
 
 from django.conf import settings
 from django.db import migrations, models
+import django.db.models.deletion
+import taggit.managers
 
 
 class Migration(migrations.Migration):
@@ -9,6 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        ('taggit', '0002_auto_20150616_2121'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -17,13 +20,12 @@ class Migration(migrations.Migration):
             name='Article',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=50, unique=True)),
+                ('title', models.CharField(max_length=50)),
                 ('description', models.CharField(default='', max_length=250)),
                 ('body', models.TextField(default='')),
                 ('read_time', models.PositiveIntegerField(default=1)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('author', models.ManyToManyField(to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
@@ -128,6 +130,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='article',
             name='tag',
-            field=models.ManyToManyField(to='articles.Tag'),
+            field=taggit.managers.TaggableManager(blank=True, help_text='A comma-separated list of tags.', through='taggit.TaggedItem', to='taggit.Tag', verbose_name='Tags'),
+        ),
+        migrations.AddField(
+            model_name='article',
+            name='user',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='articles', to=settings.AUTH_USER_MODEL),
         ),
     ]

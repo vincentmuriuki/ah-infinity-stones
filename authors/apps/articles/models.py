@@ -1,4 +1,5 @@
 from django.db import models
+from taggit.managers import TaggableManager
 from authors.apps.authentication.models import (User)
 
 
@@ -13,9 +14,9 @@ class Tag(models.Model):
 
 class Article(models.Model):
     """This class represents the Articles model"""
-    title = models.CharField(max_length=50, null=False, unique=True)
-    author = models.ManyToManyField(User)
-    tag = models.ManyToManyField(Tag)
+    title = models.CharField(max_length=50, null=False)
+    user = models.ForeignKey(User, related_name= 'articles', on_delete=models.CASCADE)
+    tag = TaggableManager(blank=True)
     description = models.CharField(max_length=250, null=False, default="")
     body = models.TextField(null=False, default="")
     read_time = models.PositiveIntegerField(default=1)

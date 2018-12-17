@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from authors.apps.articles.models import Article, User, Tag, Comment
+from taggit_serializer.serializers import (TagListSerializerField,
+                                           TaggitSerializer)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -10,16 +12,17 @@ class UserSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
+        fields = '__all__'
 
 
 class ArticleSerializer(serializers.ModelSerializer):
-    tag = TagSerializer(read_only=True, many=True)
-    author = UserSerializer(read_only=True, many=True)
+    user = serializers.ReadOnlyField(source='user.username')
+    tag = TagListSerializerField()
 
     class Meta:
 
         model = Article
-        fields = ("author", "tag", "description", "body", "read_time")
+        fields = ("title", "description", "body", "read_time", "user", "tag",)
 
 
 class CommentSerializer(serializers.ModelSerializer):
