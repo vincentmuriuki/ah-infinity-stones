@@ -3,8 +3,7 @@ from rest_framework import generics
 from .serializers import ArticleSerializer, CommentSerializer
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.generics import (RetrieveUpdateAPIView, ListAPIView,
-                                     DestroyAPIView)
+from rest_framework.generics import (RetrieveUpdateDestroyAPIView, ListAPIView)
 
 
 class ArticleCreateView(generics.ListCreateAPIView):
@@ -13,30 +12,40 @@ class ArticleCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+        return Response(status=status.HTTP_201_CREATED)
 
 
-class ArticleUpdateView(RetrieveUpdateAPIView):
+class DetailsView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+    lookup_field = 'art_slug'
 
-    def update(self, request, pk):
-        return Response(status=status.HTTP_200_OK)
+    def update(self, request, art_slug, *args, **kwargs):
+        article = Article.objects.get(art_slug=art_slug)
+        serializer_data = request.data
+        serializer = self.serializer_class(
+            article, data=serializer_data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": "article updated successfully", "Data": serializer.data}, status=status.HTTP_200_OK)
+
+    def delete(self, request, art_slug):
+        queryset = Article.objects.get(art_slug=art_slug)
+        queryset.delete()
+        return Response({"message": "article deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
 
 class ArticleListAPIView(ListAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
 
-    def get(self, request, pk):
+    def get(self, request, slug):
         return Response(status=status.HTTP_200_OK)
 
 
-class ArticleDeleteAPIView(DestroyAPIView):
+# class ArticleDeleteAPIView(DestroyAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-
-    def delete(self, request, pk):
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class CommentCreateViewAPIView(generics.ListCreateAPIView):
@@ -44,7 +53,7 @@ class CommentCreateViewAPIView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
 
 
-class CommentUpdateView(RetrieveUpdateAPIView):
+class CommentUpdateView(RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 

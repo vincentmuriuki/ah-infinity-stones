@@ -49,11 +49,8 @@ INSTALLED_APPS = [
     'authors.apps.articles',
     'authors.apps.notifications',
     'social_django',
-<<<<<<< HEAD
-=======
     'taggit',
-    'taggit_serializer',
->>>>>>> create an article and retrieve a specific article by id
+
 ]
 
 MIDDLEWARE = [
