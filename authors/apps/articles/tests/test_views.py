@@ -1,30 +1,59 @@
-# from rest_framework import status
-# from django.test import TestCase
-# from django.urls import reverse
-# from .test_config import MainTestConfig
-# from authors.apps.authentication.tests.test_setup import BaseSetUp
-# from authors.apps.articles.models import (Article)
+import json
+import jwt
+
+from rest_framework import status
+from django.test import TestCase
+from django.urls import reverse
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.conf import settings
+
+from .test_config import MainTestConfig
+from ..models import User
+from authors.apps.authentication.tests.test_setup import BaseSetUp
+from authors.apps.articles.models import (Article)
 
 
-# class CreateArticleTestCase(MainTestConfig):
-#     def setUp(self):
-#         self.base = BaseSetUp()
-#         self.client = self.base.client
-#         self.article_data = {
-#             'title': 'The war storry',
-#             'author': 1,
-#             'tag': [1],
-#             'description': 'Love is blind',
-#             'body': 'I really loved war until...',
-#             'read_time': 3
-#         }
-#         self.token = "eSknaojdIdlafesodoilkjIKLLKLJnjudalfdJndajfdaljfeESFdafjdalfjaofje"
-#         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token)
+class CreateArticleTestCase(TestCase):
+    def setUp(self):
+        self.base = BaseSetUp()
+        self.client = self.base.client
+        self.user = {
+            'user': {
+                'username': 'remmy',
+                'email': 'remmy@test.com',
+                'password': '@Password123'
+            }
+        }
+        self.article_data = {
+            'title': 'The war storry',
+            'author': 1,
+            'tag': [1],
+            'description': 'Love is blind',
+            'body': 'I really loved war until...',
+            'read_time': 3
+        }
 
-#     def test_post_article(self):
-#         response = self.client.post(
-#             reverse('articles'), self.article_data, format="json")
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        res = self.client.post(
+            reverse('authentication:register'), self.user, format="json")
+        decoded = jwt.decode(
+            res.data['Token'], settings.SECRET_KEY, algorithm='HS256')
+        user = User.objects.get(email=decoded['email'])
+        pk = user.id
+        # url = 'http://127.0.0.1:8000/api/user/activate/{pk}/{token}'.format(
+        #     pk=pk, token=res.data['Token'])
+        user.is_active = 't'
+        user.save()
+        self.article_url = reverse('articles:articles')
+
+    def test_post_article(self):
+        response = self.client.post(
+            self.article_url,
+            self.article_data,
+            format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIn(b'article created successfully',
+                      response.content)
 
 #     def test_user_can_get_an_article(self):
 #         response = self.client.get(reverse('list', ))
