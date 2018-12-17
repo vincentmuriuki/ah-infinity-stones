@@ -1,11 +1,11 @@
 import jwt
 from rest_framework import status
 from rest_framework.generics import RetrieveUpdateAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated,\
- IsAuthenticatedOrReadOnly
+from rest_framework.permissions import (AllowAny, IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly
+                                        )
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .backends import JWTAuthentication
 from django.http import JsonResponse
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
@@ -20,6 +20,7 @@ from .serializers import (
     LoginSerializer, RegistrationSerializer, UserSerializer
 )
 from .models import User
+from .backends import JWTAuthentication
 
 
 class RegistrationAPIView(APIView):
@@ -30,9 +31,8 @@ class RegistrationAPIView(APIView):
 
     def post(self, request):
         user = request.data.get('user', {})
-        # jwt_auth = JWTAuthentication()
         """
-        Generate and return a decoded token.
+        Register user and send activation email.
         """
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
@@ -43,16 +43,9 @@ class RegistrationAPIView(APIView):
         }
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
         token = token.decode('utf-8')
-        # The create serializer, validate serializer, save serializer pattern
-        # below is common and you will see it a lot throughout this course and
-        # your own work later on. Get familiar with it.
-        # email = user['email']
-        # token = jwt_auth.generate_token(email)
         domain = '127.0.0.1:8000'
-        self.uid = urlsafe_base64_encode(force_bytes(user['username'])).decode("utf-8")
-        # token = user.token()
-        # jwt_auth = JWTAuthentication()
-        # token = jwt_auth.generate_token(user['email'])
+        self.uid = urlsafe_base64_encode(
+            force_bytes(user['username'])).decode("utf-8")
         time = datetime.now()
         time = datetime.strftime(time, '%d-%B-%Y %H:%M')
         message = render_to_string('email_confirm.html', {
@@ -74,7 +67,8 @@ class RegistrationAPIView(APIView):
             [to_email, ],
             html_message=message, fail_silently=False)
 
-        message = {'Message': '{} registered successfully, please check your mail to activate your account.'.format(
+        message = {'Message': '{} registered successfully, please check your\
+        mail to activate your account.'.format(
             user['username']), "Token": token}
         serializer.save()
         return Response(message, status=status.HTTP_201_CREATED)
@@ -91,16 +85,13 @@ class ActivationView(APIView):
         """
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
-            print(uid)
             user = User.objects.get(username=uid)
-            print(user.email)
             if user.is_active is True:
                 return Response({'message': 'Activation link has expired'})
             else:
                 if user is not None and jwt.decode(token,
-                                                   settings.SECRET_KEY, algorithms='HS256')\
-                                                   ['email']\
-                                                   == user.email:
+                                                   settings.SECRET_KEY,
+                                                   algorithms='HS256')['email'] == user.email:
                     user.is_active = True
                     user.save()
                     # return redirect('home')
