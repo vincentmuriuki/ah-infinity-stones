@@ -30,7 +30,6 @@ class RegistrationAPIView(APIView):
 
     def post(self, request):
         user = request.data.get('user', {})
-        # jwt_auth = JWTAuthentication()
         """
         Generate and return a decoded token.
         """
@@ -46,13 +45,8 @@ class RegistrationAPIView(APIView):
         # The create serializer, validate serializer, save serializer pattern
         # below is common and you will see it a lot throughout this course and
         # your own work later on. Get familiar with it.
-        # email = user['email']
-        # token = jwt_auth.generate_token(email)
         domain = '127.0.0.1:8000'
         self.uid = urlsafe_base64_encode(force_bytes(user['username'])).decode("utf-8")
-        # token = user.token()
-        # jwt_auth = JWTAuthentication()
-        # token = jwt_auth.generate_token(user['email'])
         time = datetime.now()
         time = datetime.strftime(time, '%d-%B-%Y %H:%M')
         message = render_to_string('email_confirm.html', {
@@ -130,7 +124,6 @@ class LoginAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         return JsonResponse({"message": "login success, welcome "+user["email"]},
                             status=status.HTTP_200_OK)
-        # return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class SocialAuthAPIView(APIView):
