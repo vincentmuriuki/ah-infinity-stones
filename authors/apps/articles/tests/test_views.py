@@ -1,4 +1,3 @@
-
 import jwt
 
 from rest_framework import status
@@ -39,36 +38,19 @@ class CreateArticleTestCase(TestCase):
             response.data['Token'], settings.SECRET_KEY, algorithm='HS256')
         user = User.objects.get(email=decoded['email'])
         user.is_active = True
-<<<<<<< HEAD
         self.token = response.data['Token']
         self.client.credentials(HTTP_AUTHORIZATION=self.token)
-=======
-        self.token = res.data['Token']
-
-        # reverse('authentication:activate', kwargs={"token": res.data['Token']})
->>>>>>> Refactor tests
         user.save()
-        # self.token = res.data["Token"]
-        # import pdb; pdb.set_trace()
-
         self.article_url = reverse('articles:articles')
 
     def test_post_article(self):
 
-<<<<<<< HEAD
-=======
-        self.client.credentials(HTTP_AUTHORIZATION=self.token)
->>>>>>> Refactor tests
         response = self.client.post(
-            self.article_url,
-            self.article_data,
-            format="json"
-        )
-<<<<<<< HEAD
+            self.article_url, self.article_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_user_can_get_an_article(self):
-        response = self.client.get(self.article_url,)
+        response = self.client.get(self.article_url, )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_user_can_update_article(self):
@@ -80,15 +62,7 @@ class CreateArticleTestCase(TestCase):
             self.change_article,
             format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn(b'article updated successfully',
-=======
-        # import pdb; pdb.set_trace()
-        # print(response.data)
-        # self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        # print(response.content['message'])
-        self.assertIn(b'article created successfully',
->>>>>>> Refactor tests
-                      response.content)
+        self.assertIn(b'article updated successfully', response.content)
 
     def test_user_can_delete_article(self):
         self.client.post(self.article_url, self.article_data, format="json")
@@ -98,8 +72,7 @@ class CreateArticleTestCase(TestCase):
             format='json',
             follow=True)
         self.assertEquals(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertIn('article deleted successfully',
-                      response.data['message'])
+        self.assertIn('article deleted successfully', response.data['message'])
 
 
 class CreateCommentTestCase(MainTestConfig):
@@ -240,22 +213,67 @@ class ArticleLikeDisklikeTestCase(ArticleTagsTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
-class ArticleFavoriteTestCase(ArticleTagsTestCase):
+class ArticleFavoriteTestCase(TestCase):
     """This class defines the api test case to favorite articles"""
 
     def setUp(self):
         """Set or initialize the test data"""
         # add article
-        self.article = {
-            "title": "Life Hack Guide",
-            "author": 1,
-            "tag": [1],
-            "description": "Discorer you life in 3 minutes.",
-            "body": "Many people still do not to know what they value in life",
-            "read_time": 3
+        self.base = BaseSetUp()
+        self.client = self.base.client
+        self.user = {
+            'user': {
+                'username': 'remmy',
+                'email': 'remmy@test.com',
+                'password': '@Password123'
+            }
         }
-        self.favorite = {"article": 1, "user": 1, "favorite": True}
-        self.client.post("api/articles", self.article, format="json")
+        self.article_data = {
+            'art_slug': 'The-war-storry',
+            'title': 'The war storry',
+            'author': 1,
+            'tag': ['js'],
+            'description': 'Love is blind',
+            'body': 'I really loved war until...',
+            'read_time': 3
+        }
+
         response = self.client.post(
-            "api/articles/favorites", self.favorite, format="json")
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            reverse('authentication:register'), self.user, format="json")
+        decoded = jwt.decode(
+            response.data['Token'], settings.SECRET_KEY, algorithm='HS256')
+        user = User.objects.get(email=decoded['email'])
+        user.is_active = True
+        self.token = response.data['Token']
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        user.save()
+        self.article_url = reverse('articles:articles')
+
+        self.favorite = {"article": 1, "user": 1, "favorite": True}
+        self.client.post(self.article_url, self.article_data, format="json")
+        self.article = Article.objects.get()
+
+    def test_favorite_article(self):
+        response = self.client.post(
+            reverse(
+                'articles:favourite_article',
+                kwargs={'art_slug': self.article.art_slug}),
+            self.favorite,
+            format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_unfavorite_article(self):
+        self.client.post(
+            reverse(
+                'articles:favourite_article',
+                kwargs={'art_slug': self.article.art_slug}),
+            self.favorite,
+            format="json")
+
+        response = self.client.delete(
+            reverse(
+                'articles:favourite_article',
+                kwargs={'art_slug': self.article.art_slug}),
+            self.favorite,
+            format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
