@@ -46,13 +46,8 @@ class RegistrationAPIView(APIView):
         # The create serializer, validate serializer, save serializer pattern
         # below is common and you will see it a lot throughout this course and
         # your own work later on. Get familiar with it.
-        # email = user['email']
-        # token = jwt_auth.generate_token(email)
         domain = '127.0.0.1:8000'
         self.uid = urlsafe_base64_encode(force_bytes(user['username'])).decode("utf-8")
-        # token = user.token()
-        # jwt_auth = JWTAuthentication()
-        # token = jwt_auth.generate_token(user['email'])
         time = datetime.now()
         time = datetime.strftime(time, '%d-%B-%Y %H:%M')
         message = render_to_string('email_confirm.html', {
@@ -74,7 +69,8 @@ class RegistrationAPIView(APIView):
             [to_email, ],
             html_message=message, fail_silently=False)
 
-        message = {'Message': '{} registered successfully, please check your mail to activate your account.'.format(
+        message = {'Message': '{} registered successfully, please check your \
+        mail to activate your account.'.format(
             user['username']), "Token": token}
         serializer.save()
         return Response(message, status=status.HTTP_201_CREATED)
@@ -103,7 +99,6 @@ class ActivationView(APIView):
                                                    == user.email:
                     user.is_active = True
                     user.save()
-                    # return redirect('home')
                     return Response("Thank you for your email confirmation.\
                     Now you can log into your account.")
                 else:
@@ -130,7 +125,6 @@ class LoginAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         return JsonResponse({"message": "login success, welcome "+user["email"]},
                             status=status.HTTP_200_OK)
-        # return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class SocialAuthAPIView(APIView):
