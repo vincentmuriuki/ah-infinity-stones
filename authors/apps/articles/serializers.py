@@ -18,12 +18,20 @@ class ArticleSerializer(serializers.ModelSerializer):
     """Article serializer that converts querysets to json data"""
     user = serializers.ReadOnlyField(source='user.username')
     tag = TagListSerializerField()
+    share_urls = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
 
         model = Article
         fields = ("art_slug", "title", "description", "body", "read_time",
-                  "tag", "user", "created_at", "updated_at")
+                  "tag", "user", "share_urls", "created_at", "updated_at")
+
+    def get_share_urls(self, instance):
+        """
+        Populates share_urls with google, facebook, and twitter share urls.
+        """
+        request = self.context.get('request')
+        return instance.get_share_uri(request=request)
 
 
 class CommentSerializer(serializers.ModelSerializer):
