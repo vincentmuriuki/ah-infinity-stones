@@ -12,7 +12,7 @@ class ArticleCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-        return Response({"message": "article created successfully", "Data":
+        return Response({"Message": "article created successfully", "Data":
                          serializer.data}, status=status.HTTP_201_CREATED)
 
 
