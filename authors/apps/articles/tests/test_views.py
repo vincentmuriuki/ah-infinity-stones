@@ -39,18 +39,32 @@ class CreateArticleTestCase(TestCase):
             response.data['Token'], settings.SECRET_KEY, algorithm='HS256')
         user = User.objects.get(email=decoded['email'])
         user.is_active = True
+<<<<<<< HEAD
         self.token = response.data['Token']
         self.client.credentials(HTTP_AUTHORIZATION=self.token)
+=======
+        self.token = res.data['Token']
+
+        # reverse('authentication:activate', kwargs={"token": res.data['Token']})
+>>>>>>> Refactor tests
         user.save()
+        # self.token = res.data["Token"]
+        # import pdb; pdb.set_trace()
+
         self.article_url = reverse('articles:articles')
 
     def test_post_article(self):
 
+<<<<<<< HEAD
+=======
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+>>>>>>> Refactor tests
         response = self.client.post(
             self.article_url,
             self.article_data,
             format="json"
         )
+<<<<<<< HEAD
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_user_can_get_an_article(self):
@@ -67,6 +81,13 @@ class CreateArticleTestCase(TestCase):
             format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn(b'article updated successfully',
+=======
+        # import pdb; pdb.set_trace()
+        # print(response.data)
+        # self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        # print(response.content['message'])
+        self.assertIn(b'article created successfully',
+>>>>>>> Refactor tests
                       response.content)
 
     def test_user_can_delete_article(self):
