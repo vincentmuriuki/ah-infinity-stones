@@ -1,11 +1,24 @@
+<<<<<<< HEAD
 from rest_framework import status
 from django.test import TestCase
 from django.urls import reverse
 from .test_config import MainTestConfig
+=======
+import jwt
+
+from rest_framework import status
+from django.test import TestCase
+from django.urls import reverse
+from django.conf import settings
+
+from .test_config import MainTestConfig
+from ..models import User
+>>>>>>> feat(tag-articles): Implement article tagging functionalities
 from authors.apps.authentication.tests.test_setup import BaseSetUp
 from authors.apps.articles.models import (Article)
 
 
+<<<<<<< HEAD
 class CreateArticleTestCase(MainTestConfig):
     def setUp(self):
         self.base = BaseSetUp()
@@ -14,10 +27,29 @@ class CreateArticleTestCase(MainTestConfig):
             'title': 'The war storry',
             'author': 1,
             'tag': [1],
+=======
+class CreateArticleTestCase(TestCase):
+    def setUp(self):
+        self.base = BaseSetUp()
+        self.client = self.base.client
+        self.user = {
+            'user': {
+                'username': 'remmy',
+                'email': 'remmy@test.com',
+                'password': '@Password123'
+            }
+        }
+        self.article_data = {
+            'art_slug': 'The-war-storry',
+            'title': 'The war storry',
+            'author': 1,
+            'tag': ['js'],
+>>>>>>> feat(tag-articles): Implement article tagging functionalities
             'description': 'Love is blind',
             'body': 'I really loved war until...',
             'read_time': 3
         }
+<<<<<<< HEAD
         self.token = "eSknaojdIdlafesodoilkjIKLLKLJnjudalfdJndajfdaljfeESFdafjdalfjaofje"
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token)
 
@@ -48,6 +80,79 @@ class CreateArticleTestCase(MainTestConfig):
             format='json',
             follow=True)
         self.assertEquals(response.status_code, status.HTTP_204_NO_CONTENT)
+=======
+
+        response = self.client.post(
+            reverse('authentication:register'), self.user, format="json")
+        decoded = jwt.decode(
+            response.data['Token'], settings.SECRET_KEY, algorithm='HS256')
+        user = User.objects.get(email=decoded['email'])
+        user.is_active = True
+        self.token = response.data['Token']
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        user.save()
+        self.article_url = reverse('articles:articles')
+
+    def test_post_article(self):
+
+        response = self.client.post(
+            self.article_url,
+            self.article_data,
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_user_can_get_an_article(self):
+        response = self.client.get(self.article_url,)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_user_can_update_article(self):
+        self.client.post(self.article_url, self.article_data, format="json")
+        article = Article.objects.get()
+        self.change_article = {'title': 'The love storry'}
+        response = self.client.put(
+            reverse('articles:update', kwargs={'art_slug': article.art_slug}),
+            self.change_article,
+            format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn(b'article updated successfully',
+                      response.content)
+
+    def test_user_can_delete_article(self):
+        self.client.post(self.article_url, self.article_data, format="json")
+        article = Article.objects.get()
+        response = self.client.delete(
+            reverse('articles:update', kwargs={'art_slug': article.art_slug}),
+            format='json',
+            follow=True)
+        self.assertEquals(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertIn('article deleted successfully',
+                      response.data['message'])
+
+    def test_user_can_tag_an_article(self):
+        """Test user can register new tags"""
+        response = self.client.post(
+            self.article_url,
+            self.article_data,
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['tag'], self.article_data.get("tag"))
+
+    def test_view_article_tags(self):
+        """Test user can be able to view tags on a given article"""
+        slug = self.client.post(
+            self.article_url,
+            self.article_data,
+            format="json"
+        ).data["art_slug"]
+        response = self.client.get(
+            self.article_url+"/{}".format(slug),
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["tag"], self.article_data.get("tag"))
+>>>>>>> feat(tag-articles): Implement article tagging functionalities
 
 
 class CreateCommentTestCase(MainTestConfig):
@@ -64,6 +169,7 @@ class CreateCommentTestCase(MainTestConfig):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
+<<<<<<< HEAD
 class ArticleTagsTestCase(TestCase):
     """This class defines the api for Tag CRUD methods"""
 
@@ -136,6 +242,9 @@ class ArticleTagsTestCase(TestCase):
 
 
 class ArticleRatingTestCase(ArticleTagsTestCase):
+=======
+class ArticleRatingTestCase(TestCase):
+>>>>>>> feat(tag-articles): Implement article tagging functionalities
     """This class defines the api to article rating test case"""
 
     def setUp(self):
@@ -167,7 +276,11 @@ class ArticleRatingTestCase(ArticleTagsTestCase):
         """
 
 
+<<<<<<< HEAD
 class ArticleLikeDisklikeTestCase(ArticleTagsTestCase):
+=======
+class ArticleLikeDisklikeTestCase(TestCase):
+>>>>>>> feat(tag-articles): Implement article tagging functionalities
     """This class defines the api test case to like or dislike articles"""
 
     def setUp(self):
@@ -188,7 +301,11 @@ class ArticleLikeDisklikeTestCase(ArticleTagsTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
+<<<<<<< HEAD
 class ArticleFavoriteTestCase(ArticleTagsTestCase):
+=======
+class ArticleFavoriteTestCase(TestCase):
+>>>>>>> feat(tag-articles): Implement article tagging functionalities
     """This class defines the api test case to favorite articles"""
 
     def setUp(self):
