@@ -169,7 +169,6 @@ EMAIL_HOST = 'smtp.sendgrid.com'
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
-<<<<<<< HEAD
 EMAIL_USE_TLS = True
 
 AUTHENTICATION_BACKENDS = (
@@ -210,6 +209,3 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/articles'
-=======
-EMAIL_USE_TLS = True
->>>>>>> feature(email verification): implement email verification when a user signs in (#33)

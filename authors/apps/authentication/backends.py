@@ -30,13 +30,8 @@ class JWTAuthentication(authentication.BaseAuthentication):
 
         # Check whether the user is active
         if not user.is_active:
-<<<<<<< HEAD
             raise AuthenticationFailed("Your account is disabled, please "
                                        "visit your email to activate your account")
-=======
-            raise AuthenticationFailed("Your account is inactive. Please visit your\
-             account to activate")
->>>>>>> feature(email verification): implement email verification when a user signs in (#33)
         return (user, token)
 
     def generate_token(self, email, username):
